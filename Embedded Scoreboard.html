@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Allegiant Scoreboard</title>
+  <script type="text/javascript"  src="https://tableaustg.allegiantair.com/javascripts/api/tableau-2.min.js"></script>
+  
+ 
+<script type="text/javascript">
+
+
+
+var vizList = ["https://tableaustg.allegiantair.com/views/CompanyScoreboard/BaseScoreboard",
+				"https://tableaustg.allegiantair.com/views/CompanyScoreboard/CompanyScoreboard"];
+				
+var baseList = ["AVL",
+				"BLI",
+				"CVG",
+				"FLL",
+				"IND",
+				"IWA",
+				"LAS",
+				"LAX",
+				"MYR",
+				"OAK",
+				"PGD",
+				"PIE",
+				"PIT",
+				"SFB",
+				"VPS"];
+
+var baseLoop = new boolean;
+
+var viz;
+var workbook;
+var vizLen = vizList.length;
+var vizCount = 0;
+
+function createViz(vizPlusMinus) {
+var vizDiv = document.getElementById("vizContainer"),
+options = {
+hideTabs: true,
+hideToolbar: true
+};
+vizCount = parseInt(vizPlusMinus);
+
+<!-- if (vizCount >= vizLen) {  -->
+<!-- // Keep the vizCount in the bounds of the array index. -->
+<!-- vizCount = 0; -->
+<!-- } else if (vizCount < 0) { -->
+<!-- vizCount = vizLen - 1; -->
+<!-- } -->
+
+if (viz) { // If a viz object exists, delete it.
+viz.dispose();
+}
+var vizURL = vizList[vizCount];
+viz = new tableau.Viz(vizDiv, vizURL, options); 
+  setInterval(function () {viz.refreshDataAsync() }, 120000);
+}
+		
+function baseFilter(base) {
+    workbook = viz.getWorkbook();
+	workbook.changeParameterValueAsync("Base Param", base).function();
+}
+
+function hideBase() {
+var x = document.getElementById("controls");
+if (x.style.display === "none") {
+	x.style.display = "inline";
+	} else {
+		x.style.display = "none";
+	}
+}
+
+function hideDiv() {
+var x = document.getElementById("type");
+var y = document.getElementById("showHideText");
+if (x.style.display === "none") {
+	x.style.display = "block";
+	} else {
+		x.style.display = "none";
+	}
+if (y.style.display === "none") {
+	y.style.display = "block";
+	} else {
+		y.style.display = "none";
+	}
+}
+
+
+ 
+</script>
+</head>
+
+<body onload="createViz(1);hideBase();">
+			<!-- <span id="showHideText"> <p id="hide" onclick="hideDiv();">Click to Show/Hide Options<p> </span> -->
+
+
+	
+<div id="type" style="padding:20px;">
+	Type: <select id="changeType" onchange="createViz(value);hideBase();">
+		<option value="0">Base</option>
+		<option selected="selected" value="1">Company</option>
+		</select>
+			<span id="controls" style="padding:20px;">
+			Base: <select id="changeBase" onchange="baseFilter(value);">
+				<option value="AVL">AVL</option>
+				<option value="BLI">BLI</option>
+				<option value="CVG">CVG</option>
+				<option value="FLL">FLL</option>
+				<option value="IND">IND</option>
+				<option value="IWA">IWA</option>
+				<option selected="selected" value="LAS">LAS</option>
+				<option value="LAX">LAX</option>
+				<option value="MYR">MYR</option>
+				<option value="OAK">OAK</option>
+				<option value="PGD">PGD</option>
+				<option value="PIE">PIE</option>
+				<option value="PIT">PIT</option>
+				<option value="SFB">SFB</option>
+				<option value="VPS">VPS</option>
+				</select>
+			</span>
+
+</div>			
+
+<div id="vizContainer" style="width:1000px; height:877px;"></div>
+
+</body>
+</html>
