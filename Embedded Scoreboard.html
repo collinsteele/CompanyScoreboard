@@ -28,40 +28,54 @@ var baseList = ["AVL",
 				"SFB",
 				"VPS"];
 
-var baseLoop = 0;
+        var sVal = "Off";
 
-        <!-- var i = 0, l = baseList.length; -->
-        <!-- (function iterator() { -->
-            <!-- console.log(baseList[i]); -->
+        function vizLoop() {
 
-            <!-- if (++i < l) { -->
-                <!-- setTimeout(iterator, 15000); -->
-            <!-- } -->
-        <!-- })(); -->
+            //baseLoop = parseInt(status);
+            //if (baseLoop == 1) {
+            var i = 0, l = baseList.length;
+
+                (function iterator() {
+                   // console.log(baseList[i]);
+					baseFilter(baseList[i]);
+                    //console.log(i);
+                    var s = document.getElementById("loopSel");
+                    sVal = s.value;
+                    //console.log(l);
+                   // console.log(sVal);
+                    if (++i < l && sVal == "On") {
+                        setTimeout(iterator, 15000);
+                     //   console.log("true");
+                    } else if  (sVal == "On") {
+                        setTimeout(vizLoop,30000);
+                    }
+                })();
+            //} else {
+            //    baseLoop = 0;
+            //}
+        }
+
+        var loopVal = "Off";
+        var loopCounter = 0;
+
+        function radioChange(loopValue) {
+            do {
+                loopVal = loopValue;
+                //console.log(loopVal);
+                var d = document.getElementById("loopSel");
+                loopVal = d.value;
+                loopCounter++;
+                if (loopVal == "On") {
+                    vizLoop();
+                }
+            } while (loopVal == "On" && loopCounter < 3);
+
 
 var viz;
 var workbook;
 var vizLen = vizList.length;
 var vizCount = 0;
-
-function vizLoop(status) {
-baseLoop = parseInt(status);
-if(baseLoop == 1) {
-        var i = 0, l = baseList.length;
-        (function iterator() {
-            console.log(baseList[i]);
-
-            if (++i < l) {
-                setTimeout(iterator, 15000);
-            }
-        })();
-} else {
-baseLoop = 0;
-}
-}
-
-
-
 
 function createViz(vizPlusMinus) {
 var vizDiv = document.getElementById("vizContainer"),
@@ -70,13 +84,6 @@ hideTabs: true,
 hideToolbar: true
 };
 vizCount = parseInt(vizPlusMinus);
-
-<!-- if (vizCount >= vizLen) {  -->
-<!-- // Keep the vizCount in the bounds of the array index. -->
-<!-- vizCount = 0; -->
-<!-- } else if (vizCount < 0) { -->
-<!-- vizCount = vizLen - 1; -->
-<!-- } -->
 
 if (viz) { // If a viz object exists, delete it.
 viz.dispose();
@@ -150,9 +157,11 @@ if (y.style.display === "none") {
             </select>
         </span>
 		<span id="bLoop" style="padding:20px;">
-			Loop:  <select id="toggleLoop" onchange="vizLoop(value);">
-				<option value="0">Off</option>
-				<option value="1">On</option>
+        Loop: <select id="loopSel" onchange="radioChange(value);">
+        <option value="Off" selected="selected">Off</option>
+        <option value="On">On</option>
+    </select>
+	</span>
     </div>
 
     <div id="vizContainer" style="width:1000px; height:877px;"></div>
