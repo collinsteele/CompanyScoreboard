@@ -28,8 +28,25 @@ var baseList = ["AVL",
 				"SFB",
 				"VPS"];
 
-        var baseLoop = new Boolean(false);
+var baseLoop = 0;
 
+        <!-- var i = 0, l = baseList.length; -->
+        <!-- (function iterator() { -->
+            <!-- console.log(baseList[i]); -->
+
+            <!-- if (++i < l) { -->
+                <!-- setTimeout(iterator, 15000); -->
+            <!-- } -->
+        <!-- })(); -->
+
+var viz;
+var workbook;
+var vizLen = vizList.length;
+var vizCount = 0;
+
+function vizLoop(status) {
+baseLoop = parseInt(status);
+if(baseLoop == 1) {
         var i = 0, l = baseList.length;
         (function iterator() {
             console.log(baseList[i]);
@@ -38,11 +55,13 @@ var baseList = ["AVL",
                 setTimeout(iterator, 15000);
             }
         })();
+} else {
+baseLoop = 0;
+}
+}
 
-var viz;
-var workbook;
-var vizLen = vizList.length;
-var vizCount = 0;
+
+
 
 function createViz(vizPlusMinus) {
 var vizDiv = document.getElementById("vizContainer"),
@@ -130,7 +149,10 @@ if (y.style.display === "none") {
                 <option value="VPS">VPS</option>
             </select>
         </span>
-
+		<span id="bLoop" style="padding:20px;">
+			Loop:  <select id="toggleLoop" onchange="vizLoop(value);">
+				<option value="0">Off</option>
+				<option value="1">On</option>
     </div>
 
     <div id="vizContainer" style="width:1000px; height:877px;"></div>
