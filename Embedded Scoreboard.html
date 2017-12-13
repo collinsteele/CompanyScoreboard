@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  <title>Allegiant Scoreboard</title>
-  <script type="text/javascript"  src="https://tableaustg.allegiantair.com/javascripts/api/tableau-2.min.js"></script>
-  
- 
-<script type="text/javascript">
+<head>
+    <title>Allegiant Scoreboard</title>
+    <script type="text/javascript" src="https://tableaustg.allegiantair.com/javascripts/api/tableau-2.min.js"></script>
+
+
+    <script type="text/javascript">
 
 
 
 var vizList = ["https://tableaustg.allegiantair.com/views/CompanyScoreboard/BaseScoreboard",
 				"https://tableaustg.allegiantair.com/views/CompanyScoreboard/CompanyScoreboard"];
-				
+
 var baseList = ["AVL",
 				"BLI",
 				"CVG",
@@ -28,7 +28,16 @@ var baseList = ["AVL",
 				"SFB",
 				"VPS"];
 
-var baseLoop = new boolean;
+        var baseLoop = new Boolean(false);
+
+        var i = 0, l = baseList.length;
+        (function iterator() {
+            console.log(baseList[i]);
+
+            if (++i < l) {
+                setTimeout(iterator, 15000);
+            }
+        })();
 
 var viz;
 var workbook;
@@ -54,10 +63,10 @@ if (viz) { // If a viz object exists, delete it.
 viz.dispose();
 }
 var vizURL = vizList[vizCount];
-viz = new tableau.Viz(vizDiv, vizURL, options); 
+viz = new tableau.Viz(vizDiv, vizURL, options);
   setInterval(function () {viz.refreshDataAsync() }, 120000);
 }
-		
+
 function baseFilter(base) {
     workbook = viz.getWorkbook();
 	workbook.changeParameterValueAsync("Base Param", base).function();
@@ -88,43 +97,43 @@ if (y.style.display === "none") {
 }
 
 
- 
-</script>
+
+    </script>
 </head>
 
 <body onload="createViz(1);hideBase();">
-			<!-- <span id="showHideText"> <p id="hide" onclick="hideDiv();">Click to Show/Hide Options<p> </span> -->
+    <!-- <span id="showHideText"> <p id="hide" onclick="hideDiv();">Click to Show/Hide Options<p> </span> -->
 
 
-	
-<div id="type" style="padding:20px;">
-	Type: <select id="changeType" onchange="createViz(value);hideBase();">
-		<option value="0">Base</option>
-		<option selected="selected" value="1">Company</option>
-		</select>
-			<span id="controls" style="padding:20px;">
-			Base: <select id="changeBase" onchange="baseFilter(value);">
-				<option value="AVL">AVL</option>
-				<option value="BLI">BLI</option>
-				<option value="CVG">CVG</option>
-				<option value="FLL">FLL</option>
-				<option value="IND">IND</option>
-				<option value="IWA">IWA</option>
-				<option selected="selected" value="LAS">LAS</option>
-				<option value="LAX">LAX</option>
-				<option value="MYR">MYR</option>
-				<option value="OAK">OAK</option>
-				<option value="PGD">PGD</option>
-				<option value="PIE">PIE</option>
-				<option value="PIT">PIT</option>
-				<option value="SFB">SFB</option>
-				<option value="VPS">VPS</option>
-				</select>
-			</span>
 
-</div>			
+    <div id="type" style="padding:20px;">
+        Type: <select id="changeType" onchange="createViz(value);hideBase();">
+            <option value="0">Base</option>
+            <option selected="selected" value="1">Company</option>
+        </select>
+        <span id="controls" style="padding:20px;">
+            Base: <select id="changeBase" onchange="baseFilter(value);">
+                <option value="AVL">AVL</option>
+                <option value="BLI">BLI</option>
+                <option value="CVG">CVG</option>
+                <option value="FLL">FLL</option>
+                <option value="IND">IND</option>
+                <option value="IWA">IWA</option>
+                <option selected="selected" value="LAS">LAS</option>
+                <option value="LAX">LAX</option>
+                <option value="MYR">MYR</option>
+                <option value="OAK">OAK</option>
+                <option value="PGD">PGD</option>
+                <option value="PIE">PIE</option>
+                <option value="PIT">PIT</option>
+                <option value="SFB">SFB</option>
+                <option value="VPS">VPS</option>
+            </select>
+        </span>
 
-<div id="vizContainer" style="width:1000px; height:877px;"></div>
+    </div>
+
+    <div id="vizContainer" style="width:1000px; height:877px;"></div>
 
 </body>
 </html>
