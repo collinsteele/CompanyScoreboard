@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Aeris JavaScript SDK - Interactive Map Animation</title>
+    <script defer src="https://cdn.aerisapi.com/sdk/js/latest/aerisweather.min.js"></script>
+
+    <style>
+    #map {
+        height: 500px;
+    }
+    .map-container {
+        margin: 30px auto;
+        width: 500px;
+    }
+    </style>
+
+</head>
+<body>
+
+<div class="map-container">
+    <div id="map"></div>
+    <div class="map-controls" style="margin-top:5px;">
+        <a id="map-toggle-anim" href="#">Play</a>
+    </div>
+</div>
+
+<script>
+
+    window.onload = () => {
+
+        const aeris = new AerisWeather('dQQU7OFygvyXMBPoSUeM7', 'ftz1nXPcfPr7xZNDvBzGCPWXlJq3n3W9blevi5nn');
+
+        aeris.views().then(views => {
+            const map = new views.InteractiveMap(document.getElementById('map'), {
+                center: {
+                    lat: 39.7,
+                    lon: -93.38
+                },
+                zoom: 4,
+                layers: 'flat-dk,water-depth,radar,admin-cities-dk',
+                timeline: {
+                    from: -2 * 3600, // seconds
+                    to: 0 * 3600
+                }
+            });
+            // Animation controls
+            const control = document.getElementById('map-toggle-anim');
+            map.on('load', () => {
+            
+                // update the control label based on the map animation state
+                map.on('timeline:play', () => {
+                    control.innerHTML = 'Stop';
+                });
+                map.on('timeline:stop', () => {
+                    control.innerHTML = 'Play';
+                });
+                
+                // toggle the animation when the play/stop button is clicked
+                control.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    map.timeline.toggle();
+                });
+            });
+        });
+    };
+
+</script>
+
+</body>
+</html>
